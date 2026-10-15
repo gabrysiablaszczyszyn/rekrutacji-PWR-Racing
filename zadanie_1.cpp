@@ -31,7 +31,7 @@ Punkt usredniony_punkt(float suma_x, float suma_y, int licznik_liczb, int& naste
 void wypisz_tabele(const vector<Punkt>& punkty){
     if(!punkty.empty()){
         cout << "[";
-        for (int i = 0; i < punkty.size() - 1; i++){
+        for (size_t i = 0; i < punkty.size() - 1; i++){
             cout << punkty[i].id << ",";
         }
         cout << punkty[punkty.size() - 1].id << "]" << "\n";
@@ -113,7 +113,7 @@ pair <vector<Punkt>, vector<Punkt>> podzielPunkty(Punkt skrajny_lewy, Punkt skra
     vector<Punkt> lewa_strona;
     vector<Punkt> prawa_strona;
     float D;
-    for (int i = 0; i < tabela.size(); i++){
+    for (size_t i = 0; i < tabela.size(); i++){
         // Obliczenie wyznacznika (D) dla kazdego punktu
         D = (skrajny_prawy.x - skrajny_lewy.x) * (tabela[i].y - skrajny_lewy.y) - (skrajny_prawy.y - skrajny_lewy.y) * (tabela[i].x - skrajny_lewy.x);
         if (D > 0) {
@@ -131,7 +131,7 @@ void QuickHull(Punkt skrajny_lewy, Punkt skrajny_prawy, const vector<Punkt>& tab
         float d, max_odleglosc = -1;
         Punkt najdalej_oddalony;
 
-        for (int i = 0; i < tabela.size(); i++ ){
+        for (size_t i = 0; i < tabela.size(); i++ ){
             d = abs((skrajny_prawy.x - skrajny_lewy.x) * (tabela[i].y - skrajny_lewy.y) - 
               (skrajny_prawy.y - skrajny_lewy.y) * (tabela[i].x - skrajny_lewy.x));
             if(d > max_odleglosc){
@@ -148,7 +148,7 @@ void QuickHull(Punkt skrajny_lewy, Punkt skrajny_prawy, const vector<Punkt>& tab
 
 
 }
-//wylicza i zwraca najktotsza otoczke wykorzystujac algoryt QuickHull
+// wylicza i zwraca najkrótszą otoczkę wykorzystując algorytm QuickHull
 vector<Punkt> otoczka(const vector<Punkt>& punkty) {
     Punkt skrajny_lewy = punkty[0], skrajny_prawy = punkty[0];
     vector<Punkt> otoczka;
@@ -157,8 +157,8 @@ vector<Punkt> otoczka(const vector<Punkt>& punkty) {
     if (punkty.empty()) {
         return otoczka;
     }
-    //znajdujemy skrajne pukty na lewo i prawo
-    for (int i = 1; i < punkty.size(); i++){
+    // znajdujemy skrajne punkty na lewo i prawo
+    for (size_t i = 1; i < punkty.size(); i++){
         if (punkty[i].x < skrajny_lewy.x){
             skrajny_lewy = punkty[i];
         }
@@ -166,14 +166,14 @@ vector<Punkt> otoczka(const vector<Punkt>& punkty) {
             skrajny_prawy = punkty[i];
         }
     }
-    //sortujemy punkty wzgledem ocinka [skrajny_lewy, skrajny_prawy] na punkty 
+    // sortujemy punkty względem odcinka [skrajny_lewy, skrajny_prawy] na punkty
     //znajdujace sie po jego lewej i prawej
     auto wynik_podzialu = podzielPunkty(skrajny_lewy, skrajny_prawy, punkty);
     otoczka.push_back(skrajny_lewy);
-    // Rekurencyjnie tworzymy gorna czesc otoczk
+    // Rekurencyjnie tworzymy górną część otoczki
     QuickHull(skrajny_lewy, skrajny_prawy, wynik_podzialu.first, otoczka);
     otoczka.push_back(skrajny_prawy);
-    // Rekurencyjnie tworzymy gorna czesc otoczk
+    // Rekurencyjnie tworzymy dolną część otoczki
     QuickHull(skrajny_prawy,skrajny_lewy, wynik_podzialu.second, otoczka);
 
     return otoczka;
@@ -187,8 +187,8 @@ float obwod(const vector<Punkt>& punkty){
         return 0;
     }
     float wynik = 0;
-    for (int i = 0; i < punkty.size(); i++){
-        // Uzywamy modulo (%), aby ostatni punkt polaczyl sie z powrotem z pierwszym, domykajac obwów
+    for (size_t i = 0; i < punkty.size(); i++){
+        // Używamy modulo (%), aby ostatni punkt połączył się z powrotem z pierwszym, domykając obwód
         wynik = wynik + sqrt(pow(punkty[i].x - punkty[(i + 1) % punkty.size()].x ,2) + pow(punkty[i].y - punkty[(i + 1) % punkty.size()].y, 2));
     }
     return wynik;

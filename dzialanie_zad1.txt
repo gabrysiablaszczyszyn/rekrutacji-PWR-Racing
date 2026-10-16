@@ -1,0 +1,33 @@
+ZASTOSOWANIE I ALGORYTMY:
+- Deduplikacja: Program sprawdza odległość euklidesową między pachołkami.
+    Jeśli są bliżej niż zadane min_odleglosc, łączy je w jeden nowy punkt
+    (średnia współrzędnych x i y) z nowym ID, usuwając stare.
+- Otoczka wypukła: Zastosowano wydajny algorytm QuickHull. Odrzuca on punkty
+    wewnątrz trasy za pomocą iloczynu wektorowego, znajdując tylko skrajne wierzchołki.
+
+ZASTOSOWANE NARZĘDZIA:
+- Język C++ z wykorzystaniem biblioteki standardowej (STL)
+- <vector> do zarządzania pamięcią
+- Biblioteka <cmath> do wyliczania pierwiastków i potęg przy mierzeniu dystansu i obwodu
+
+NAPOTKANE PROBLEMY I EDGE CASE'Y:
+- Dodano warunki zabezpieczające (np. if (!punkty.empty())), aby program nie wygenerował 
+    błędu pamięci przy braku danych.
+- Tradycyjne liczenie równań prostych mogłoby spowodować błąd dzielenia przez zero (dla linii pionowych).
+    Zastosowanie wyznacznika wektorów całkowicie wyeliminowało ten problem
+- Główna pętla sprawdzająca duplikaty iteruje do przedostatniego elementu (i < liczba_punktow - 1), by móc
+    sprawdzać sąsiadów do przodu. Wymagało to dodania osobnego warunku (edge case) na samym końcu funkcji, aby
+    program nie "zgubił" ostatniego pachołka z pliku wejściowego, jeśli nie był on wcześniej usunięty.
+
+INSTRUKCJA URUCHOMIENIA:
+- Umieść plik wejściowy example_input.txt w tym samym katalogu co plik z kodem zadanie_1.cpp
+- Skompiluj program z poziomu terminala poleceniem: g++ zadanie_1.cpp -o zadanie1.exe
+- Uruchom aplikację: .\zadanie1.exe (dla systemu Windows) lub ./zadanie1.exe (dla Linux/macOS)
+- Wynik działania programu (nowe pachołki po deduplikacji oraz długość i lista wierzchołków otoczki) wyświetli się automatycznie w terminalu
+
+DOWÓD POPRAWNOŚCI:
+- Przetestowanie programu na dostarczonym zbiorze 12 punktów zwraca dokładnie oczekiwany
+    wynik: obwód 39.162 oraz poprawnie zagregowane punkty 13 i 14
+- Zastosowanie iloczynu wektorowego (wyznacznika) oraz obsługi pustego wektora
+    gwarantuje, że algorytm zakończy się sukcesem nawet dla złośliwych danych, takich
+    jak punkty ułożone w jednej linii, eliminując ryzyko błędu dzielenia przez zero

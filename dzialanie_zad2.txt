@@ -1,0 +1,42 @@
+SENSOR 1:
+Cechy pomiaru: 
+- Bardzo częste próbkowanie danych i duża gęstość punktów pomiarowych
+
+Charakter błędów:
+- Występuje stały szum pomiarowy, co objawia się poszarpaną linią na całej trasie
+- Występuje silny dryf (błąd skumulowany) – kolejne pętle "ósemki" przesuwają się stopniowo w lewo
+- Położenie końcowe jest zarejestrowane w zupełnie innym miejscu niż punkt startowy
+
+Podejrzenia co do źródła nieprawidłowości:
+Potężny dryf to efekt sumowania błędów w czasie.Z kolei poszarpana linia wskazuje
+    na wysoką wariancję (szum o wysokiej częstotliwości) samego sygnału wejściowego.
+
+SENSOR 2:
+Cechy pomiaru:
+-Próbkowanie danych jest bardzo rzadkie, co powoduje nienaturalne łączenie punktów prostymi odcinkami i "ścinanie" zakrętów
+
+Charakter błędów:
+- Pojawiają się nagłe, ostre skoki sygnału (wartości odstające), odrywające się od właściwej trasy
+- Trasa wykazuje delikatny dryf – kolejne pętle nie nakładają się idealnie i również uciekają w lewą stronę
+- Trasa nie zamyka się poprawnie, punkt końcowy jest delikatnieprzesunięty względem rzeczywistego
+
+Podejrzenia co do źródła nieprawidłowości:
+Niska częstotliwość próbkowania sprawia, że dysponujemy jedynie rzadko rozstawionymi punktami, co powoduje "ścinanie zakretów"
+Natomiast nagłe, ostre skoki sygnału to typowe wartości odstające, które prawdopodobnie wynikają z chwilowego błędu transmisji danych
+ZASTOSOWANIE I ALGORYTMY:
+- Fuzja danych opiera się na filtrze wykorzystującym przyrosty z Sensora 1
+    do zachowania ciągłości ruchu oraz absolutne współrzędne z Sensora 2
+    do cyklicznego korygowania wyliczanej pozycji.
+- Wyszukiwanie binarne - Po optymalizacji trasy program odnajduje odpowiednie punkty dla szukanego czasu
+- Jeżeli podany czas T nie trafia idealnie w zarejestrowaną próbkę, program wylicza proporcję między dwoma
+    sąsiadującymi pomiarami i zwraca dokładną pozycję x i y
+
+NAPOTKANE PROBLEMY I EDGE CASE'Y:
+- zabezpieczenie przed blednym dzialaniem uzytkownika - wpisanie czasu mniejszego od 0 lub większego od 33
+    nie powoduje bledu programu
+
+INSTRUKCJA URUCHOMIENIA:
+1.Umieść pliki wejściowe sensor1.csv i sensor2.csv w tym samym katalogu co plik z kodem zadanie2.cpp
+2.Skompiluj program z poziomu terminala poleceniem: g++ zadanie2.cpp -o zadanie2.exe
+3.Uruchom aplikację: .\zadanie2.exe (dla systemu Windows) lub ./zadanie2.exe (dla Linux/macOS)
+4.Wpisz wartość liczbową i zatwierdź klawiszem Enter
